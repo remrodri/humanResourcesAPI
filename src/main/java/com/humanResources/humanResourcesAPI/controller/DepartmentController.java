@@ -22,7 +22,7 @@ public class DepartmentController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?>findDepartmentById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(departmentService.findDepartmentById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(departmentService.getDepartmentById(id));
     }
 
     @GetMapping

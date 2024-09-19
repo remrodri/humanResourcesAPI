@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IDepartmentService {
-Optional<Department> findDepartmentById(Long id);
-List<Department> findAllDepartments();
-DepartmentVo createDepartment(CreateDepartmentDto dto);
-DepartmentVo updateDepartmentById(Long id, CreateDepartmentDto dto);
-boolean deleteDepartmentById(Long id);
-
+    Optional<DepartmentVo> getDepartmentById(Long id);
+    Optional<Department> findDepartmentById(Long id);
+    List<DepartmentVo> findAllDepartments();
+    DepartmentVo createDepartment(CreateDepartmentDto dto);
+    DepartmentVo updateDepartmentById(Long id, CreateDepartmentDto dto);
+    boolean deleteDepartmentById(Long id);
 }

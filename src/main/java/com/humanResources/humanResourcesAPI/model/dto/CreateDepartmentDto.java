@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
+import java.util.Set;
 
 public record CreateDepartmentDto(
 @NotBlank(message = "El nombre no debe estar vacio")
@@ -17,6 +18,6 @@ String name,
 @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "La descr solo puede contener numeros y letras")
 String descr
 
-//List<Long>positionIds
+//Set<Long> positionIds
 ) {
 }

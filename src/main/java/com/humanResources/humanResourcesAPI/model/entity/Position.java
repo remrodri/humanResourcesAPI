@@ -37,7 +37,7 @@ public class Position {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "id_department")
     private Department department;
 

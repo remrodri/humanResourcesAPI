@@ -28,6 +28,9 @@ public class Project {
     @Column(name = "descr")
     private String descr;
 
+    @Column(name = "approved")
+    private boolean approved;
+
     @Column(name = "start_date")
     private Date startDate;
 
