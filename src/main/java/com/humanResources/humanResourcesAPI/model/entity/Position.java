@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,8 @@ public class Position {
     private String descr;
 
     @Column(name = "base_salary")
-    private Double baseSalary;
+    private BigDecimal baseSalary;
+//    private Double baseSalary;
 
     @CreationTimestamp
     @Column(name = "created_at",updatable = false)

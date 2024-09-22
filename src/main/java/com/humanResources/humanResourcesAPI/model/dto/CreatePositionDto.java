@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.math.BigDecimal;
+
 public record CreatePositionDto(
         @NotBlank(message = "El nombre no debe estar vacio")
         @Size(min = 1, max = 50, message = "el nombre debe estar entre 1 y 50 caracteres")
@@ -14,7 +16,7 @@ public record CreatePositionDto(
         @Size(min = 1,max=500, message= "La descripcion debe estar entre 1 y 500 caracteres")
         String descr,
 
-        double baseSalary,
+        BigDecimal baseSalary,
         long departmentId
 ) {
 }

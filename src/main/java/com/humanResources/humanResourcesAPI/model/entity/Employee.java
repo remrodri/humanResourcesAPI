@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -27,7 +28,7 @@ public class Employee {
     private String lastName;
 
     @Column(name = "birth_date")
-    private String birthDate;
+    private Date birthDate;
 
     @Column(name ="email")
     private String email;
