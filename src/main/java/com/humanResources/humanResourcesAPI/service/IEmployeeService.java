@@ -9,9 +9,10 @@ import java.util.Optional;
 
 public interface IEmployeeService {
     Optional<EmployeeVo> getEmployeeById(Long id);
-    Optional<Employee> findDepartmentById(Long id);
+    Optional<Employee> findEmployeeById(Long id);
     List<EmployeeVo> getAllEmployee();
     EmployeeVo createEmployee(CreateEmployeeDto dto);
     EmployeeVo updateEmployee(Long id, CreateEmployeeDto dto);
     boolean deleteEmployee(Long id);
+    EmployeeVo assignProjectToEmployee(Long employeeId, Long projectId);
 }

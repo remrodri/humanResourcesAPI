@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -40,9 +41,17 @@ public class Employee {
     @JoinColumn(name = "id_position")
     private Position position;
 
-    @ManyToMany
-    @JsonIgnore
-    private Set<Project>projects;
+//    @ManyToMany
+//    @JsonIgnore
+//    private Set<Project>projects;
+    @ManyToMany(cascade = CascadeType.ALL)
+//    @JsonIgnore
+    @JoinTable(
+        name = "employe_project",
+        joinColumns = {@JoinColumn(name = "employee_id")},
+        inverseJoinColumns = {@JoinColumn(name = "project_id")}
+    )
+    private Set<Project> projects = new HashSet<>();
 
     @CreationTimestamp
     @Column(name = "created_at",updatable = false)
