@@ -46,5 +46,4 @@ public class DepartmentController {
                 .status(HttpStatus.CREATED)
                 .body(standarResponse);
     }
-
 }

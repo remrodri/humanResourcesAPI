@@ -7,7 +7,7 @@ import com.humanResources.humanResourcesAPI.model.entity.Employee;
 import com.humanResources.humanResourcesAPI.model.entity.Position;
 import com.humanResources.humanResourcesAPI.model.entity.Project;
 import com.humanResources.humanResourcesAPI.repository.IEmployeeRepository;
-import com.humanResources.humanResourcesAPI.repository.IPositionRepository;
+import com.humanResources.humanResourcesAPI.repository.IProjectRepository;
 import com.humanResources.humanResourcesAPI.vo.EmployeeVo;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +18,15 @@ public class EmployeeService implements IEmployeeService {
 
     private final IEmployeeRepository employeeRepository;
     private final IPositionService positionService;
+    private final IProjectRepository projectRepository;
 
-    public EmployeeService(IEmployeeRepository employeeRepository, IPositionService positionService) {
+    public EmployeeService(
+            IEmployeeRepository employeeRepository,
+            IPositionService positionService,
+            IProjectRepository projectRepository) {
         this.employeeRepository = employeeRepository;
         this.positionService = positionService;
-
+        this.projectRepository = projectRepository;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public Optional<Employee> findDepartmentById(Long id) {
+    public Optional<Employee> findEmployeeById(Long id) {
         return employeeRepository.findById(id);
     }
 
@@ -106,5 +110,32 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public boolean deleteEmployee(Long id) {
         return false;
+    }
+
+    @Override
+    public EmployeeVo assignProjectToEmployee(Long employeeId, Long projectId) {
+        Optional<Employee> employee = employeeRepository.findById(employeeId);
+        Optional<Project> project = projectRepository.findById(projectId);
+
+        if (employee.isEmpty() && project.isEmpty()) {
+            throw new RuntimeException("No se encontro el empleado o proyecto");
+        }
+        Employee employeeToAssign = employee.get();
+        Project projectToAssign = project.get();
+
+        employeeToAssign.getProjects().add(projectToAssign);
+
+        Employee employeeSaved = employeeRepository.save(employeeToAssign);
+
+        return new EmployeeVo(
+                employeeSaved.getId(),
+                employeeSaved.getFirstName(),
+                employeeSaved.getLastName(),
+                employeeSaved.getBirthDate(),
+                employeeSaved.getEmail(),
+                employeeSaved.getPhone(),
+                employeeSaved.getPosition(),
+                employeeSaved.getProjects()
+        );
     }
 }

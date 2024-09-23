@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.*;
@@ -42,10 +43,13 @@ public class Project {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany
-    @JoinTable(name = "project_employee",
-        joinColumns = @JoinColumn(name = "id_project"),
-        inverseJoinColumns = @JoinColumn(name = "id_employee"))
-private Set<Employee> employees;
+//    @ManyToMany
+//    @JoinTable(name = "project_employee",
+//        joinColumns = @JoinColumn(name = "id_project"),
+//        inverseJoinColumns = @JoinColumn(name = "id_employee"))
+//private Set<Employee> employees;
 
+    @ManyToMany(mappedBy = "projects")
+    @JsonIgnore
+    private Set<Employee>employees = new HashSet<>();
 }
