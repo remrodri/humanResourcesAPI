@@ -1,6 +1,7 @@
 package com.humanResources.humanResourcesAPI.controller;
 
 import com.humanResources.humanResourcesAPI.model.dto.CreateEmployeeDto;
+import com.humanResources.humanResourcesAPI.model.dto.UpdateEmployeeDto;
 import com.humanResources.humanResourcesAPI.service.EmployeeService;
 import com.humanResources.humanResourcesAPI.vo.EmployeeVo;
 import com.humanResources.humanResourcesAPI.vo.StandarResponse;
@@ -44,5 +45,21 @@ public class EmployeeController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StandarResponse> updateEmployee(@PathVariable("id") Long id, @Valid @RequestBody UpdateEmployeeDto dto){
+        EmployeeVo vo = employeeService.updateEmployee(id, dto);
+
+        StandarResponse standarResponse = StandarResponse
+                .builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Empleado actualizado correctamnte")
+                .data(vo)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(standarResponse);
     }
 }

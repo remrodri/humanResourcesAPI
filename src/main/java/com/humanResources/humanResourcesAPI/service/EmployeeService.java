@@ -2,7 +2,9 @@ package com.humanResources.humanResourcesAPI.service;
 
 import com.humanResources.humanResourcesAPI.model.Exception.EmployeeNotFoundException;
 import com.humanResources.humanResourcesAPI.model.Exception.PositionNotFoundException;
+import com.humanResources.humanResourcesAPI.model.Exception.ProjectNotFoundException;
 import com.humanResources.humanResourcesAPI.model.dto.CreateEmployeeDto;
+import com.humanResources.humanResourcesAPI.model.dto.UpdateEmployeeDto;
 import com.humanResources.humanResourcesAPI.model.entity.Employee;
 import com.humanResources.humanResourcesAPI.model.entity.Position;
 import com.humanResources.humanResourcesAPI.model.entity.Project;
@@ -72,7 +74,7 @@ public class EmployeeService implements IEmployeeService {
 
     @Override
     public EmployeeVo createEmployee(CreateEmployeeDto dto) {
-        Optional<Position>positionOptional = positionService.findPositionById(dto.position());
+        Optional<Position>positionOptional = positionService.findPositionById(dto.positionId());
         Set<Project>projects = new HashSet<>();
 
         if (positionOptional.isEmpty()){
@@ -103,8 +105,48 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public EmployeeVo updateEmployee(Long id, CreateEmployeeDto dto) {
-        return null;
+    public EmployeeVo updateEmployee(Long id, UpdateEmployeeDto dto) {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isEmpty()) {
+            throw new EmployeeNotFoundException("No se encontro el empleado con el id: "+id);
+        }
+
+        Optional<Position> position = positionService.findPositionById(dto.positionId());
+        if (position.isEmpty()) {
+            throw new PositionNotFoundException("No se encontro la position con el id: "+dto.positionId());
+        }
+
+        Set<Project>projects = new HashSet<>();
+        for (Long projectId: dto.projects()){
+            Optional<Project> project = projectRepository.findById(projectId);
+
+            if (project.isEmpty()) {
+                throw new ProjectNotFoundException("No se encontro el project");
+            }
+            projects.add(project.get());
+        }
+
+        Employee employeeToUpdate = employeeOptional.get();
+        employeeToUpdate.setFirstName(dto.firstName());
+        employeeToUpdate.setLastName(dto.lastName());
+        employeeToUpdate.setBirthDate(dto.birthDate());
+        employeeToUpdate.setEmail(dto.email());
+        employeeToUpdate.setPhone(dto.phone());
+        employeeToUpdate.setPosition(position.get());
+        employeeToUpdate.setProjects(projects);
+
+        Employee employeeUpdated = employeeRepository.save(employeeToUpdate);
+
+        return new EmployeeVo(
+                employeeUpdated.getId(),
+                employeeUpdated.getFirstName(),
+                employeeUpdated.getLastName(),
+                employeeUpdated.getBirthDate(),
+                employeeUpdated.getEmail(),
+                employeeUpdated.getPhone(),
+                employeeUpdated.getPosition(),
+                employeeUpdated.getProjects()
+        );
     }
 
     @Override
