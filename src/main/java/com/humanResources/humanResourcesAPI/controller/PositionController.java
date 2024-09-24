@@ -21,14 +21,16 @@ public class PositionController {
     public ResponseEntity<?>findPositionById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(positionService.findPositionById(id));
+//                .body(positionService.findPositionById(id));
+                .body(positionService.findPositionVoById(id));
     }
 
     @GetMapping
     public ResponseEntity<?>findAllPositions() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(positionService.findAllPositions());
+//                .body(positionService.findAllPositions());
+                .body(positionService.findAllPositionVo());
     }
 
     @PostMapping
@@ -36,7 +38,7 @@ public class PositionController {
         PositionVo positionVo = positionService.createPosition(dto);
         StandarResponse standarResponse = StandarResponse
                 .builder()
-                .message("Position creado exitosamente")
+                .message("Position creada exitosamente")
                 .data(positionVo)
                 .statusCode(HttpStatus.CREATED.value())
                 .build();

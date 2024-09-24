@@ -13,4 +13,6 @@ public interface IPositionService {
     PositionVo createPosition(CreatePositionDto dto);
     PositionVo updatePosition(Long id, CreatePositionDto dto);
     boolean deletePositionById(Long id);
+    PositionVo findPositionVoById(Long id);
+    List<PositionVo> findAllPositionVo();
 }

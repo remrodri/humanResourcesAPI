@@ -9,10 +9,7 @@ import com.humanResources.humanResourcesAPI.repository.IPositionRepository;
 import com.humanResources.humanResourcesAPI.vo.PositionVo;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PositionService implements  IPositionService{
@@ -70,4 +67,38 @@ public class PositionService implements  IPositionService{
     public boolean deletePositionById(Long id) {
         return false;
     }
+
+    @Override
+    public PositionVo findPositionVoById(Long id) {
+        Optional<Position> positionOptional = positionRepository.findById(id);
+        if (positionOptional.isEmpty()){
+            throw new PositionNotFoundException("No se encontro la posicion con el id: " + id);
+        }
+        return new PositionVo(
+            positionOptional.get().getId(),
+            positionOptional.get().getName(),
+            positionOptional.get().getDescr(),
+            positionOptional.get().getBaseSalary(),
+            positionOptional.get().getDepartment(),
+            positionOptional.get().getEmployees()
+        );
+    }
+
+    @Override
+    public List<PositionVo> findAllPositionVo() {
+        List<Position> positions = positionRepository.findAll();
+        List<PositionVo> positionVos = new ArrayList<>();
+        for (Position position : positions) {
+            positionVos.add(new PositionVo(
+                    position.getId(),
+                    position.getName(),
+                    position.getDescr(),
+                    position.getBaseSalary(),
+                    position.getDepartment(),
+                    position.getEmployees()
+            ));
+        }
+        return positionVos;
+    }
+
 }
