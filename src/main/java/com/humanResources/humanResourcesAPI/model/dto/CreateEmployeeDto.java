@@ -33,7 +33,7 @@ public record CreateEmployeeDto(
         String phone,
 
         @NotNull(message = "La posicion no debe estar vacio")
-        Long position
+        Long positionId
 //        List<Project>projects
 ) {
 }
