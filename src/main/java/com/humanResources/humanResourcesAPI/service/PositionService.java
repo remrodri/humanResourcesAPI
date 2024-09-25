@@ -95,4 +95,37 @@ public class PositionService implements  IPositionService{
         }
         return new PositionEmployeesVo(position.get().getEmployees());
     }
+
+    @Override
+    public List<PositionVo> findAllPositionVo() {
+        List<Position> positions = positionRepository.findAll();
+        List<PositionVo> positionVos = new ArrayList<>();
+        for (Position position : positions) {
+            positionVos.add(new PositionVo(
+                position.getId(),
+                position.getName(),
+                position.getDescr(),
+                position.getBaseSalary(),
+                position.getDepartment(),
+                position.getEmployees()
+            ));
+        }
+        return positionVos;
+    }
+
+    @Override
+        public PositionVo findPositionVoById(Long id) {
+        Optional<Position> positionOptional = positionRepository.findById(id);
+        if (positionOptional.isEmpty()){
+            throw new PositionNotFoundException("No se encontro la posicion con el id: " + id);
+        }
+        return new PositionVo(
+            positionOptional.get().getId(),
+            positionOptional.get().getName(),
+            positionOptional.get().getDescr(),
+            positionOptional.get().getBaseSalary(),
+            positionOptional.get().getDepartment(),
+            positionOptional.get().getEmployees()
+        );
+    }
 }
