@@ -2,6 +2,7 @@ package com.humanResources.humanResourcesAPI.controller;
 
 import com.humanResources.humanResourcesAPI.model.dto.CreatePositionDto;
 import com.humanResources.humanResourcesAPI.service.PositionService;
+import com.humanResources.humanResourcesAPI.vo.PositionEmployeesVo;
 import com.humanResources.humanResourcesAPI.vo.PositionVo;
 import com.humanResources.humanResourcesAPI.vo.StandarResponse;
 import jakarta.validation.Valid;
@@ -42,6 +43,20 @@ public class PositionController {
                 .build();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(standarResponse);
+    }
+
+    @GetMapping("/{id}/employees")
+    public ResponseEntity<?>findPositionEmployees(@PathVariable("id") Long id) {
+        PositionEmployeesVo positionEmployeesVo = positionService.findEmployeeByPositionId(id);
+        StandarResponse standarResponse = StandarResponse
+                .builder()
+                .message("Empleados encontrados exitosamente")
+                .data(positionEmployeesVo)
+                .statusCode(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(standarResponse);
     }
 }

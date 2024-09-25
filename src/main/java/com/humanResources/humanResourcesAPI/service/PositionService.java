@@ -6,13 +6,11 @@ import com.humanResources.humanResourcesAPI.model.entity.Department;
 import com.humanResources.humanResourcesAPI.model.entity.Employee;
 import com.humanResources.humanResourcesAPI.model.entity.Position;
 import com.humanResources.humanResourcesAPI.repository.IPositionRepository;
+import com.humanResources.humanResourcesAPI.vo.PositionEmployeesVo;
 import com.humanResources.humanResourcesAPI.vo.PositionVo;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PositionService implements  IPositionService{
@@ -69,5 +67,32 @@ public class PositionService implements  IPositionService{
     @Override
     public boolean deletePositionById(Long id) {
         return false;
+    }
+
+    @Override
+    public List<PositionVo> findAllPositionsVo() {
+        List<Position> positions = positionRepository.findAll();
+        List<PositionVo> positionVos = new ArrayList<>();
+        for (Position position : positions) {
+            PositionVo positionVo = new PositionVo(
+                    position.getId(),
+                    position.getName(),
+                    position.getDescr(),
+                    position.getBaseSalary(),
+                    position.getDepartment(),
+                    position.getEmployees()
+            );
+            positionVos.add(positionVo);
+        }
+        return positionVos;
+    }
+
+    @Override
+    public PositionEmployeesVo findEmployeeByPositionId(Long id) {
+        Optional<Position> position = positionRepository.findById(id);
+        if(position.isEmpty()){
+            throw new PositionNotFoundException("No se encontro la posicion con el id " + id);
+        }
+        return new PositionEmployeesVo(position.get().getEmployees());
     }
 }
