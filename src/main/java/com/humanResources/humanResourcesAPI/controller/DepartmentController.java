@@ -3,6 +3,7 @@ package com.humanResources.humanResourcesAPI.controller;
 import com.humanResources.humanResourcesAPI.model.dto.CreateDepartmentDto;
 import com.humanResources.humanResourcesAPI.service.DepartmentService;
 import com.humanResources.humanResourcesAPI.service.PositionService;
+import com.humanResources.humanResourcesAPI.vo.DepartmenEmployeesVo;
 import com.humanResources.humanResourcesAPI.vo.DepartmentVo;
 import com.humanResources.humanResourcesAPI.vo.StandarResponse;
 import jakarta.validation.Valid;
@@ -22,7 +23,7 @@ public class DepartmentController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?>findDepartmentById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(departmentService.getDepartmentById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(departmentService.findDepartmentVoById(id));
     }
 
     @GetMapping
@@ -44,6 +45,20 @@ public class DepartmentController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
+                .body(standarResponse);
+    }
+
+    @GetMapping("/{id}/employees")
+    public ResponseEntity<StandarResponse>findEmployeesByDepartmentId(@PathVariable("id") Long id){
+        DepartmenEmployeesVo departmenEmployeesVo = departmentService.getDepartmentEmployeesById(id);
+        StandarResponse standarResponse = StandarResponse
+                .builder()
+                .message("Empleados encontrados correctamente")
+                .data(departmenEmployeesVo)
+                .statusCode(HttpStatus.OK.value())
+                .build();
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(standarResponse);
     }
 }
